@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Header, Content, ListItem, Text, Right, Icon, Spinner } from 'native-base';
+import { Container, Header, Content, ListItem, Text, Right,
+   Icon, Spinner } from 'native-base';
 import { Actions } from 'react-native-router-flux';
-import { getWorkouts } from '../actions';
+import { getExercises } from '../actions';
 
-class ManageWorkouts extends Component {
+class ManageExercises extends Component {
    constructor() {
       super();
 
@@ -17,16 +18,16 @@ class ManageWorkouts extends Component {
    }
 
    componentWillMount() {
-      this.props.getWorkouts();
+      this.props.getExercises();
    }
 
-   showWorkouts() {
-      const { workouts } = this.props;
+   showExercises() {
+      const { exercises } = this.props;
 
-      return workouts.map((workout) => {
+      return exercises.map((exercise) => {
          return (
-            <ListItem key={workout.workoutName} button onPress={() => this.onListItemPress(workout)}>
-               <Text>{workout.workoutName}</Text>
+            <ListItem key={exercise.name} button onPress={() => this.onListItemPress(exercise)}>
+               <Text>{exercise.name}</Text>
                <Right>
                   <Icon name="arrow-forward" />
                </Right>
@@ -35,10 +36,10 @@ class ManageWorkouts extends Component {
       });
    }
 
-   onListItemPress(workout) {
-      Actions.editWorkout({ workout, afterComponentUnmounts: this.hideSpinner });
+   onListItemPress(exercise) {
+      Actions.editExercise({ exercise, afterComponentUnmounts: this.hideSpinner });
 
-      this.setState({ showSpinner: true });
+      this.showSpinner();
    }
 
    hideSpinner() {
@@ -58,7 +59,7 @@ class ManageWorkouts extends Component {
                {
                   this.state.showSpinner
                   ? <Spinner color="blue" />
-                  : this.showWorkouts()
+                  : this.showExercises()
                }
             </Content>
          </Container>
@@ -68,9 +69,9 @@ class ManageWorkouts extends Component {
 }
 
 const mapStateToProps = (state) => {
-   const { workouts } = state;
+   const { exercises } = state;
 
-   return { workouts };
+   return { exercises };
 };
 
-export default connect(mapStateToProps, { getWorkouts })(ManageWorkouts);
+export default connect(mapStateToProps, { getExercises })(ManageExercises);

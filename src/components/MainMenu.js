@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import {
-   Container, Button,
+   Container, Button, Text, View,
    Header, Left, Icon, Body, Title, Right,
    Content,
    Footer, FooterTab
@@ -12,13 +12,12 @@ const Dimensions = require('Dimensions');
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
 class MainMenu extends Component {
-
    render() {
       const { menuOptionButtons } = styles;
 
       return (
          <Container>
-            <Header>
+            {/*<Header>
                <Left>
                   <Icon name="menu" />
                </Left>
@@ -26,15 +25,18 @@ class MainMenu extends Component {
                   <Title>Weight Lifter</Title>
                </Body>
                <Right />
-            </Header>
+            </Header>*/}
 
             <Content>
-               <View style={{ flex: 1, height: screenHeight-110, justifyContent: 'center', alignItems: 'center' }}>
-                  <Button style={menuOptionButtons} block>
+               <View style={{ flex: 1, height: screenHeight, justifyContent: 'center', alignItems: 'center' }}>
+                  <Button style={menuOptionButtons} onPress={() => Actions.startWorkout()} block>
                      <Text>Start Workout</Text>
                   </Button>
-                  <Button style={menuOptionButtons} block>
+                  <Button style={menuOptionButtons} onPress={() => Actions.manageWorkouts()} block>
                      <Text>Manage Workouts</Text>
+                  </Button>
+                  <Button style={menuOptionButtons} onPress={() => Actions.manageExercises()} block>
+                     <Text>Manage Exercises</Text>
                   </Button>
                   <Button style={menuOptionButtons} block>
                      <Text>Statistics</Text>
@@ -42,13 +44,13 @@ class MainMenu extends Component {
                </View>
             </Content>
 
-            <Footer>
+            {/*<Footer>
                <FooterTab>
                   <Button full>
                      <Text>Footer</Text>
                   </Button>
                </FooterTab>
-            </Footer>
+            </Footer>*/}
          </Container>
       );
    }
