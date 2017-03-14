@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { Container, Header, Content,
-   Button, Footer, FooterTab, H3 } from 'native-base';
+import { Container, Header } from 'native-base';
+import uuid from 'uuid';
 import ExerciseForm from './ExerciseForm';
 import { clearExerciseForm, createExercise } from '../actions';
 
@@ -11,17 +11,15 @@ class CreateExercise extends Component {
    constructor() {
       super();
 
-      this.onSaveButtonPress = this.onSaveButtonPress.bind(this);
+      this.onSubmit = this.onSubmit.bind(this);
    }
 
    componentWillMount() {
       this.props.clearExerciseForm();
    }
 
-   onSaveButtonPress() {
-      const { name, radioGroup } = this.props;
-
-      this.props.createExercise({ name, radioGroup });
+   onSubmit({ name, radioGroup }) {
+      this.props.createExercise({ uuid: uuid.v4(), name, radioGroup });
 
       Actions.pop();
    }
@@ -30,31 +28,11 @@ class CreateExercise extends Component {
       return (
          <Container>
             <Header />
-
-            <Content style={styles.content}>
-               <ExerciseForm />
-            </Content>
-
-            <Footer>
-               <FooterTab>
-                  <Button onPress={this.onSaveButtonPress} full primary>
-                     <H3 style={styles.saveButtonText}>Save</H3>
-                  </Button>
-               </FooterTab>
-            </Footer>
+            <ExerciseForm onSubmit={this.onSubmit} />
          </Container>
       );
    }
 }
-
-const styles = {
-   content: {
-      marginRight: 15
-   },
-   saveButtonText: {
-      color: 'white'
-   }
-};
 
 const mapStateToProps = (state) => {
    const { name, radioGroup } = state.exerciseForm;

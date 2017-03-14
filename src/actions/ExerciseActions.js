@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native';
-import { GET_EXERCISES, CREATE_EXERCISE, UPDATE_EXERCISE } from './types';
+import { GET_EXERCISES, CREATE_EXERCISE, UPDATE_EXERCISE,
+   DELETE_EXERCISE } from './types';
 
 const STORAGE_KEY = 'EXERCISES';
 
@@ -39,7 +40,7 @@ export const updateExercise = (data) => {
 
       if (asData) {
          for (const i in asData) {
-            if (asData[i].name === data.name) {
+            if (asData[i].uuid === data.uuid) {
                updatedExercises.push(data);
             }
             else {
@@ -50,6 +51,25 @@ export const updateExercise = (data) => {
 
       AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedExercises), res2 => {
          dispatch({ type: UPDATE_EXERCISE, payload: updatedExercises });
+      });
+   };
+};
+
+export const deleteExercise = (data) => {
+   return async (dispatch) => {
+      const asData = JSON.parse(await AsyncStorage.getItem(STORAGE_KEY));
+      const updatedExercises = [];
+
+      if (asData) {
+         for (const i in asData) {
+            if (asData[i].uuid !== data.uuid) {
+               updatedExercises.push(asData[i]);
+            }
+         }
+      }
+
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedExercises), res2 => {
+         dispatch({ type: DELETE_EXERCISE, payload: updatedExercises });
       });
    };
 };

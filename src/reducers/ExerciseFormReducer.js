@@ -2,10 +2,12 @@ import {
    UPDATE_EXERCISE_FORM,
    CLEAR_EXERCISE_FORM,
    CREATE_EXERCISE,
-   UPDATE_EXERCISE
+   UPDATE_EXERCISE,
+   DELETE_EXERCISE
 } from '../actions/types';
 
 const INITIAL_STATE = {
+   uuid: null,
    name: null,
    radioGroup: {
       'Free Weight': true,
@@ -21,6 +23,7 @@ export default (state = INITIAL_STATE, action) => {
       case CREATE_EXERCISE:
       case UPDATE_EXERCISE:
       case CLEAR_EXERCISE_FORM:
+      case DELETE_EXERCISE:
          return INITIAL_STATE;
       default:
          return state;

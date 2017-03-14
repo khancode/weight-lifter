@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "release": "cd android && ./gradlew assembleRelease",
+    "release": "cd android && ./gradlew assembleRelease"
   },
   "dependencies": {
     "native-base": "^2.0.7",
@@ -14,7 +14,8 @@
     "react-native-router-flux": "^3.37.0",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",

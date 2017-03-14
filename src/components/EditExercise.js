@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { Container, Header, Content, Footer, FooterTab, Button, H3 } from 'native-base';
+import { Container, Header } from 'native-base';
 import ExerciseForm from './ExerciseForm';
-import { updateExerciseForm, updateExercise } from '../actions';
+import { updateExerciseForm, deleteExercise, updateExercise } from '../actions';
 
 class EditExercise extends Component {
    constructor(props) {
       super(props);
 
-      this.onSaveButtonPress = this.onSaveButtonPress.bind(this);
+      this.onDelete = this.onDelete.bind(this);
+      this.onSubmit = this.onSubmit.bind(this);
    }
 
    componentWillMount() {
@@ -23,10 +24,18 @@ class EditExercise extends Component {
       this.props.afterComponentUnmounts();
    }
 
-   onSaveButtonPress() {
-      const { name, radioGroup } = this.props;
+   onDelete() { //({ uuid, name, radioGroup }) {
+      const { uuid, name, radioGroup } = this.props;
 
-      this.props.updateExercise({ name, radioGroup });
+      this.props.deleteExercise({ uuid, name, radioGroup });
+
+      Actions.pop();
+   }
+
+   onSubmit() { //({ uuid, name, radioGroup }) {
+      const { uuid, name, radioGroup } = this.props;
+
+      this.props.updateExercise({ uuid, name, radioGroup });
 
       Actions.pop();
    }
@@ -35,34 +44,17 @@ class EditExercise extends Component {
       return (
          <Container>
             <Header />
-            <Content style={styles.content}>
-               <ExerciseForm />
-            </Content>
-            <Footer>
-               <FooterTab>
-                  <Button onPress={this.onSaveButtonPress} full primary>
-                     <H3 style={styles.saveButtonText}>Save</H3>
-                  </Button>
-               </FooterTab>
-            </Footer>
+            <ExerciseForm onSubmit={this.onSubmit} onDelete={this.onDelete} />
          </Container>
       );
    }
 }
 
-const styles = {
-   content: {
-      marginRight: 15
-   },
-   saveButtonText: {
-      color: 'white'
-   }
-};
-
 const mapStateToProps = (state) => {
-   const { name, radioGroup } = state.exerciseForm;
+   const { uuid, name, radioGroup } = state.exerciseForm;
 
-   return { name, radioGroup };
+   return { uuid, name, radioGroup };
 };
 
-export default connect(mapStateToProps, { updateExerciseForm, updateExercise })(EditExercise);
+export default connect(mapStateToProps,
+   { updateExerciseForm, deleteExercise, updateExercise })(EditExercise);
