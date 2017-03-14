@@ -35,7 +35,7 @@ class EditExercise extends Component {
       return (
          <Container>
             <Header />
-            <Content>
+            <Content style={styles.content}>
                <ExerciseForm />
             </Content>
             <Footer>
@@ -51,6 +51,9 @@ class EditExercise extends Component {
 }
 
 const styles = {
+   content: {
+      marginRight: 15
+   },
    saveButtonText: {
       color: 'white'
    }

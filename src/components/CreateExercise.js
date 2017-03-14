@@ -28,10 +28,10 @@ class CreateExercise extends Component {
 
    render() {
       return (
-         <Container style={styles.container}>
+         <Container>
             <Header />
 
-            <Content>
+            <Content style={styles.content}>
                <ExerciseForm />
             </Content>
 
@@ -48,7 +48,7 @@ class CreateExercise extends Component {
 }
 
 const styles = {
-   container: {
+   content: {
       marginRight: 15
    },
    saveButtonText: {
