@@ -4,7 +4,7 @@ import { Actions } from 'react-native-router-flux';
 import { Container, Header } from 'native-base';
 import uuid from 'uuid';
 import ExerciseForm from './ExerciseForm';
-import { clearExerciseForm, createExercise } from '../actions';
+import { createExercise } from '../actions';
 
 class CreateExercise extends Component {
 
@@ -12,10 +12,6 @@ class CreateExercise extends Component {
       super();
 
       this.onSubmit = this.onSubmit.bind(this);
-   }
-
-   componentWillMount() {
-      this.props.clearExerciseForm();
    }
 
    onSubmit({ name, radioGroup }) {
@@ -34,10 +30,4 @@ class CreateExercise extends Component {
    }
 }
 
-const mapStateToProps = (state) => {
-   const { name, radioGroup } = state.exerciseForm;
-
-   return { name, radioGroup };
-};
-
-export default connect(mapStateToProps, { clearExerciseForm, createExercise })(CreateExercise);
+export default connect(null, { createExercise })(CreateExercise);

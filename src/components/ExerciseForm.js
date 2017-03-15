@@ -2,12 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Item, Input, Label, Text, ListItem, Radio,
    Container, Content, Footer, FooterTab, Button, H3 } from 'native-base';
-import { updateExerciseForm } from '../actions';
 
 class ExerciseForm extends Component {
 
-   constructor() {
-      super();
+   constructor(props) {
+      super(props);
+
+      let uuid = null;
+      let name = null;
+      let radioGroup = null;
+      if (this.props.exercise) {
+         uuid = this.props.exercise.uuid;
+         name = this.props.exercise.name;
+         radioGroup = this.props.exercise.radioGroup;
+      }
 
       this.state = {
          validation: {
@@ -15,6 +23,13 @@ class ExerciseForm extends Component {
                isError: false,
                description: null
             }
+         },
+         uuid: uuid || null,
+         name: name || null,
+         radioGroup: radioGroup || {
+            'Free Weight': true,
+            Barbell: false,
+            Dumbbell: false
          }
       };
 
@@ -26,9 +41,11 @@ class ExerciseForm extends Component {
    }
 
    createWeightTypeRadioGroup() {
+      const { radioGroup } = this.state;
+
       const weightTypeRadioGroupArr = [];
-      for (let weightTypeName in this.props.radioGroup) {
-         const isWeightTypeSelected = this.props.radioGroup[weightTypeName];
+      for (const weightTypeName in radioGroup) {
+         const isWeightTypeSelected = radioGroup[weightTypeName];
 
          weightTypeRadioGroupArr.push(
             <ListItem
@@ -59,11 +76,13 @@ class ExerciseForm extends Component {
          this.setState(newState);
       }
 
-      this.props.updateExerciseForm({ prop: 'name', value: text });
+      const newState = Object.assign({}, this.state);
+      newState.name = text;
+      this.setState(newState);
    }
 
    handleOnPress(weightType) {
-      const radioGroup = Object.assign({}, this.props.radioGroup);
+      const radioGroup = Object.assign({}, this.state.radioGroup);
 
       for (const weightTypeName in radioGroup) {
          radioGroup[weightTypeName] = false;
@@ -71,18 +90,21 @@ class ExerciseForm extends Component {
 
       radioGroup[weightType] = true;
 
-      this.props.updateExerciseForm({ prop: 'radioGroup', value: radioGroup });
+      const newState = Object.assign({}, this.state);
+      newState.radioGroup = radioGroup;
+      this.setState(newState);
    }
 
    onDeleteButtonPress() {
-      const { uuid, name, radioGroup } = this.props;
+      const { uuid, name, radioGroup } = this.state;
 
       this.props.onDelete({ uuid, name, radioGroup });
    }
 
    onSaveButtonPress() {
       // Perform validation
-      const { exercises, uuid, name, radioGroup } = this.props;
+      const { exercises } = this.props;
+      const { uuid, name, radioGroup } = this.state;
 
       if (!name || name.length === 0) {
          const newState = Object.assign({}, this.state);
@@ -97,7 +119,7 @@ class ExerciseForm extends Component {
       for (const i in exercises) {
          const exercise = exercises[i];
 
-         if ((uuid && uuid !== exercise.uuid) && (name === exercise.name)) {
+         if ((!uuid || uuid !== exercise.uuid) && (name === exercise.name)) {
             const newState = Object.assign({}, this.state);
             newState.validation.name = {
                isError: true,
@@ -110,7 +132,7 @@ class ExerciseForm extends Component {
 
 
       // Call function that was passed as prop from parent
-      this.props.onSubmit({ name, radioGroup });
+      this.props.onSubmit({ uuid, name, radioGroup });
    }
 
    render() {
@@ -123,7 +145,7 @@ class ExerciseForm extends Component {
                <Form>
                   <Item stackedLabel error={validation.name.isError}>
                      <Label>Exercise Name</Label>
-                     <Input onChangeText={this.onNameChange} value={this.props.name} />
+                     <Input onChangeText={this.onNameChange} value={this.state.name} />
                   </Item>
                   {
                      validation.name.isError &&
@@ -167,10 +189,9 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-   const { uuid, name, radioGroup } = state.exerciseForm;
    const { exercises } = state;
 
-   return { exercises, uuid, name, radioGroup };
+   return { exercises };
 };
 
-export default connect(mapStateToProps, { updateExerciseForm })(ExerciseForm);
+export default connect(mapStateToProps)(ExerciseForm);
