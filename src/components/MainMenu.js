@@ -58,7 +58,8 @@ class MainMenu extends Component {
 
 const styles = {
    menuOptionButtons: {
-      margin: 15
+      margin: 15,
+      backgroundColor: 'dodgerblue'
    }
 };
 

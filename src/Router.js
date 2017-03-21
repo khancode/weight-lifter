@@ -12,7 +12,13 @@ import SelectExercises from './components/SelectExercises';
 
 const RouterComponent = () => {
    return (
-      <Router>
+      <Router
+         navigationBarStyle={{ backgroundColor: 'dodgerblue' }}
+         titleStyle={{ color: '#FFFFFF' }}
+         barButtonTextStyle={{ color: '#FFFFFF' }}
+         barButtonIconStyle={{ tintColor: '#FFFFFF' }}
+         rightButtonTextStyle={{ color: '#FFFFFF' }}
+      >
          <Scene key="mainMenu" component={MainMenu} title="Weight Lifter" />
          <Scene key="startWorkout" component={StartWorkout} title="Start Workout" />
          <Scene

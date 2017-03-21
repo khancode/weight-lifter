@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { Container, Header, Content, ListItem, Text, CheckBox, Right, Footer,
    FooterTab, H3, Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
-import { getExercises, updateWorkoutForm } from '../actions';
+import { getExercises } from '../actions';
 
 class SelectExercises extends Component {
    constructor(props) {
       super(props);
 
       this.state = {
-         exercisesSelected: Object.assign({}, props.exercisesSelected)
+         exercisesSelected: Object.assign({}, this.props.exercisesSelected)
       };
 
       this.onListItemPress = this.onListItemPress.bind(this);
@@ -54,9 +54,8 @@ class SelectExercises extends Component {
    }
 
    onSaveButtonPress() {
-      this.props.updateWorkoutForm(
-         { prop: 'exercisesSelected', value: this.state.exercisesSelected }
-      );
+      this.props.setExercisesSelected(this.state.exercisesSelected);
+
       Actions.pop();
    }
 
@@ -71,7 +70,12 @@ class SelectExercises extends Component {
 
             <Footer>
                <FooterTab>
-                  <Button onPress={this.onSaveButtonPress} full primary>
+                  <Button
+                     style={styles.saveButton}
+                     onPress={this.onSaveButtonPress}
+                     full
+                     primary
+                  >
                      <H3 style={{ color: 'white' }}>Save</H3>
                   </Button>
                </FooterTab>
@@ -85,14 +89,16 @@ class SelectExercises extends Component {
 const styles = {
    checkBox: {
       marginLeft: 7
+   },
+   saveButton: {
+      backgroundColor: 'dodgerblue'
    }
 };
 
 const mapStateToProps = (state) => {
    const { exercises } = state;
-   const { exercisesSelected } = state.workoutForm;
 
-   return { exercises, exercisesSelected };
+   return { exercises };
 };
 
-export default connect(mapStateToProps, { getExercises, updateWorkoutForm })(SelectExercises);
+export default connect(mapStateToProps, { getExercises })(SelectExercises);

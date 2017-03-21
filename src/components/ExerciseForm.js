@@ -24,8 +24,8 @@ class ExerciseForm extends Component {
                description: null
             }
          },
-         uuid: uuid || null,
-         name: name || null,
+         uuid,
+         name,
          radioGroup: radioGroup || {
             'Free Weight': true,
             Barbell: false,
@@ -35,7 +35,6 @@ class ExerciseForm extends Component {
 
       this.onNameChange = this.onNameChange.bind(this);
       this.handleOnPress = this.handleOnPress.bind(this);
-
       this.onDeleteButtonPress = this.onDeleteButtonPress.bind(this);
       this.onSaveButtonPress = this.onSaveButtonPress.bind(this);
    }
@@ -168,7 +167,12 @@ class ExerciseForm extends Component {
                         <H3>Delete</H3>
                      </Button>
                   }
-                  <Button onPress={this.onSaveButtonPress} full primary>
+                  <Button
+                     style={styles.saveButton}
+                     onPress={this.onSaveButtonPress}
+                     full
+                     primary
+                  >
                      <H3 style={styles.saveButtonText}>Save</H3>
                   </Button>
                </FooterTab>
@@ -182,6 +186,9 @@ class ExerciseForm extends Component {
 const styles = {
    radioButton: {
       marginLeft: 7
+   },
+   saveButton: {
+      backgroundColor: 'dodgerblue'
    },
    saveButtonText: {
       color: 'white'

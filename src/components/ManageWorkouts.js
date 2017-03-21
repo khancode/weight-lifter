@@ -25,8 +25,8 @@ class ManageWorkouts extends Component {
 
       return workouts.map((workout) => {
          return (
-            <ListItem key={workout.workoutName} button onPress={() => this.onListItemPress(workout)}>
-               <Text>{workout.workoutName}</Text>
+            <ListItem key={workout.uuid} button onPress={() => this.onListItemPress(workout)}>
+               <Text>{workout.name}</Text>
                <Right>
                   <Icon name="arrow-forward" />
                </Right>
